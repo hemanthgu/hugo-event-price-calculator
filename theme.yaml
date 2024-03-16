@@ -1,0 +1,16 @@
+# theme.yaml configuration file
+
+name: Price Calculator short code
+license: GPLv3
+licenselink: LICENSE
+description: theme component to calculate price
+homepage: https://github.com/hemanthgu/hugo-event-price-calculator
+tags:
+  - component
+  - price
+  - shortcode
+min_version: 0.0.1
+
+author:
+  name: Hemanth Guruva Reddy
+  homepage: https://github.com/hemanthgu

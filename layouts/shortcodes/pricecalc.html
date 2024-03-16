@@ -1,0 +1,54 @@
+<div class="container" id="price-calculator">
+    <h3>Ticket Price Calculator</h3>
+    <label for="membership">Membership:</label>
+    <select id="membership">
+      <option value="nonmember">Non-Member</option>
+      <option value="member">IGUNU Member</option>
+    </select>
+    <br>
+    <label for="adults">Persons (6 years and above):</label>
+    <input type="number" id="adults" min="1" value="1">
+    <br>
+    <label for="kids">Persons (below 6 years):</label>
+    <input type="number" id="kids" min="0" value="0">
+    <br>
+    <button onclick="calculatePrice()">Calculate</button>
+    <div class="result-box">
+      <strong>Results:</strong>
+      <div id="result"></div>
+      <div id="payment-details"></div>
+      <div id="reference"></div>
+    </div>
+    <div class="total-box">
+      <strong>Body of Email:</strong>
+      <div id="email-body"></div>
+      <div id="total"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculatePrice() {
+  var membership = document.getElementById("membership").value;
+  var adults = parseInt(document.getElementById("adults").value);
+  var kids = parseInt(document.getElementById("kids").value);
+  var ticketPrice = 0;
+  var reference = "";
+  var subject = "";
+  
+  if (membership === "member") {
+    ticketPrice = 13;
+    reference = "HOLI2024 Registration - NAME - Membership - IU23XXXXX";
+    subject = "Subject: HOLI2024 Registration - NAME - Membership - IU23XXXXX";
+  } else {
+    ticketPrice = 16;
+    reference = "HOLI2024 Registration - NAME";
+    subject = "Subject: HOLI2024 Registration - NAME";
+  }
+  
+  var totalPrice = (ticketPrice * adults) + (ticketPrice * 0 * kids);
+  document.getElementById("payment-details").innerHTML = "<br>Name: Indische Gesellschaft Ulm, Neu-Ulm und Umbegung e.V.<br>IBAN: DE05 6309 0100 0411 4030 01<br>Price: " + totalPrice + "€";
+  document.getElementById("reference").innerHTML = "Reference: " + reference;
+  document.getElementById("email-body").innerHTML = subject;
+  document.getElementById("total").innerHTML = "Total: " + adults + " (6 years and above) + " + kids + " (below 6 years) = " + (adults + kids);
+}
+</script>
