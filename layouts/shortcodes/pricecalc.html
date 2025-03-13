@@ -1,69 +1,69 @@
 <div class="container" id="price-calculator">
     <p>
-    <ul>
-    	<li>
-    		<label for="membership"><strong>Membership:</strong></label>
-    		<select id="membership">
-      			<option value="nonmember">Non-Member</option>
-      			<option value="member">IGUNU Member</option>
-    		</select>
-	</li>
-    	<li>
-    		<label for="adults"><strong>Persons (6 years and above):</strong></label>
-    		<input type="number" id="adults" min="1" value="1">
-	</li>
-    	<li>
-    		<label for="kids"><strong>Persons (below 6 years):</strong></label>
-    		<input type="number" id="kids" min="0" value="0">
-	</li>
-    </ul>
-    <br>
-    <button onclick="calculatePrice()">Calculate</button>
+        <ul>
+            <li>
+                <label for="membership"><strong>Membership:</strong></label>
+                <select id="membership">
+                    <option value="nonmember">Non-Member</option>
+                    <option value="member">IGUNU Member</option>
+                </select>
+            </li>
+            <li>
+                <label for="adults"><strong>Persons ({{ .Get "adult_age" | default "6 years and above" }}):</strong></label>
+                <input type="number" id="adults" min="1" value="1">
+            </li>
+            <li>
+                <label for="kids"><strong>Persons (below {{ .Get "kid_age" | default "6 years" }}):</strong></label>
+                <input type="number" id="kids" min="0" value="0">
+            </li>
+        </ul>
+        <br>
+        <button onclick="calculatePrice('{{ .Get "member_price" | default "13" }}', '{{ .Get "nonmember_price" | default "16" }}', '{{ .Get "event_name" | default "HOLI2024" }}', '{{ .Get "bank_name" | default "Indische Gesellschaft Ulm, Neu-Ulm und Umbegung e.V." }}', '{{ .Get "iban" | default "DE05 6309 0100 0411 4030 01" }}')">Calculate</button>
     </p>
     <p>
-    <ol>
-	<li>
-    		<div class="result-box">
-      		<strong>Banking Transfer:</strong>
-      		<div id="result"></div>
-      		<div id="payment-details"></div>
-      		<div id="reference"></div>
-    		</div>
-    	</li>
-	<li>
-    		<div class="total-box">
-      		<strong>Email:</strong>
-      		<div id="email-body"></div>
-      		<div id="total"></div>
-    		</div>
-	</li>
-    </ol>
+        <ol>
+            <li>
+                <div class="result-box">
+                    <strong>Banking Transfer:</strong>
+                    <div id="result"></div>
+                    <div id="payment-details"></div>
+                    <div id="reference"></div>
+                </div>
+            </li>
+            <li>
+                <div class="total-box">
+                    <strong>Email:</strong>
+                    <div id="email-body"></div>
+                    <div id="total"></div>
+                </div>
+            </li>
+        </ol>
     </p>
-  </div>
+</div>
 
-  <script>
-    function calculatePrice() {
-  var membership = document.getElementById("membership").value;
-  var adults = parseInt(document.getElementById("adults").value);
-  var kids = parseInt(document.getElementById("kids").value);
-  var ticketPrice = 0;
-  var reference = "";
-  var subject = "";
-  
-  if (membership === "member") {
-    ticketPrice = 13;
-    reference = "HOLI2024 Registration - NAME - Membership - IU23XXXXX";
-    subject = "<strong>Subject:</strong> HOLI2024 Registration - NAME - Membership - IU23XXXXX";
-  } else {
-    ticketPrice = 16;
-    reference = "HOLI2024 Registration - NAME";
-    subject = "<strong>Subject:</strong> HOLI2024 Registration - NAME";
-  }
-  
-  var totalPrice = (ticketPrice * adults) + (ticketPrice * 0 * kids);
-	    document.getElementById("payment-details").innerHTML = "<strong>Name:</strong> Indische Gesellschaft Ulm, Neu-Ulm und Umbegung e.V.<br><strong>IBAN:</strong> DE05 6309 0100 0411 4030 01<br><strong>Price:</strong> " + totalPrice + "€";
-	    document.getElementById("reference").innerHTML = "<strong>Reference:</strong> " + reference;
-  document.getElementById("email-body").innerHTML = subject;
-	    document.getElementById("total").innerHTML = "<strong>Body:</strong> Total: " + adults + " (6 years and above) + " + kids + " (below 6 years) = " + (adults + kids) + "<br>First Name, Last Name of all participants";
-}
+<script>
+    function calculatePrice(memberPrice, nonmemberPrice, eventName, bankName, iban) {
+        var membership = document.getElementById("membership").value;
+        var adults = parseInt(document.getElementById("adults").value);
+        var kids = parseInt(document.getElementById("kids").value);
+        var ticketPrice = 0;
+        var reference = "";
+        var subject = "";
+
+        if (membership === "member") {
+            ticketPrice = parseInt(memberPrice);
+            reference = eventName + " Registration - NAME - Membership - IU23XXXXX";
+            subject = "<strong>Subject:</strong> " + eventName + " Registration - NAME - Membership - IU23XXXXX";
+        } else {
+            ticketPrice = parseInt(nonmemberPrice);
+            reference = eventName + " Registration - NAME";
+            subject = "<strong>Subject:</strong> " + eventName + " Registration - NAME";
+        }
+
+        var totalPrice = (ticketPrice * adults) + (ticketPrice * 0 * kids);
+        document.getElementById("payment-details").innerHTML = "<strong>Name:</strong> " + bankName + "<br><strong>IBAN:</strong> " + iban + "<br><strong>Price:</strong> " + totalPrice + "€";
+        document.getElementById("reference").innerHTML = "<strong>Reference:</strong> " + reference;
+        document.getElementById("email-body").innerHTML = subject;
+        document.getElementById("total").innerHTML = "<strong>Body:</strong> Total: " + adults + " (6 years and above) + " + kids + " (below 6 years) = " + (adults + kids) + "<br>First Name, Last Name of all participants";
+    }
 </script>
